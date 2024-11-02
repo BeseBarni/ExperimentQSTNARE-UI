@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "generate:api": "openapi-generator-cli generate -i ./HRWF_backend_swagger.json -o ./src/api/generated -g typescript-axios"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
