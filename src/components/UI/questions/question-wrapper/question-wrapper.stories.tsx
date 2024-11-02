@@ -1,9 +1,9 @@
 import { Meta } from "@storybook/react";
-import LeastToMostQuestion from "./least-to-most-question";
+import QuestionWrapper from "./question-wrapper";
 
-const meta: Meta<typeof LeastToMostQuestion> = {
-  title: "Questions/LeastToMostQuestion",
-  component: LeastToMostQuestion,
+const meta: Meta<typeof QuestionWrapper> = {
+  title: "Questions/QuestionWrapper",
+  component: QuestionWrapper,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   parameters: {
@@ -16,9 +16,8 @@ export default meta;
 
 export const Default = {
   args: {
-    title: "How do you percieve the color of the ligthing in the room?",
-    questonNumber: 1,
-    leastText: "Cold",
-    mostText: "Warm",
+    title: "Please select the color you think the lego was.",
+    questonNumber: 5,
+    children: <div></div>,
   },
 };

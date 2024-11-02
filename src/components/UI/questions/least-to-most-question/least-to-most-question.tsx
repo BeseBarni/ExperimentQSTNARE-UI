@@ -1,27 +1,39 @@
-type LeastToMostQuestionProps = {
-  questionNumber: number;
-  title: string;
-  leastText: string;
-  mostText: string;
+import { Radio, RadioGroup } from "@mui/material";
+import { useState } from "react";
+import { QuestionWrapper } from "src/components";
+import { IQuestionProps } from "src/models";
+
+type LeastToMostQuestionSchema = {
+  least: string;
+  most: string;
+  range: number;
 };
 
 export default function LeastToMostQuestion({
   title,
-  leastText,
-  mostText,
+  schema,
   questionNumber,
-}: LeastToMostQuestionProps) {
+  ...props
+}: IQuestionProps<LeastToMostQuestionSchema>) {
+  const [value, setValue] = useState<string | null>(null);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+
   return (
-    <div className="flex flex-col bg-white rounded-lg p-2">
-      <div className="flex justify-center gap-2 items-center">
-        <p className="font-bold">Q{questionNumber}</p>
-        <p className="font-medium">{title}</p>
-      </div>
+    <QuestionWrapper questionNumber={questionNumber} title={title}>
       <div className="flex justify-between items-center">
-        <p className="font-medium">{leastText}</p>
-        <div className="flex justify-between"></div>
-        <p className="font-medium">{mostText}</p>
+        <p className="font-medium">{schema.least}</p>
+        <RadioGroup row value={value} onChange={handleChange}>
+          {Array(schema.range)
+            .fill(0)
+            .map((_, index: number) => (
+              <Radio value={index} key={index} />
+            ))}
+        </RadioGroup>
+        <p className="font-medium">{schema.most}</p>
       </div>
-    </div>
+    </QuestionWrapper>
   );
 }

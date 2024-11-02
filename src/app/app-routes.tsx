@@ -1,5 +1,6 @@
 import { RouteObject } from "react-router-dom";
 import { AppLayout } from "src/components";
+import { ErrorPage, QuestionsPage } from "src/pages";
 
 export type AppRoute = RouteObject & {
   name?: string;
@@ -11,12 +12,16 @@ export const routes: AppRoute[] = [
   {
     path: "/",
     element: <AppLayout />,
-
+    errorElement: <ErrorPage />,
     children: [
       {
         name: "main",
         index: true,
         element: <div>example</div>,
+      },
+      {
+        path: "questions",
+        element: <QuestionsPage />,
       },
     ],
   },
