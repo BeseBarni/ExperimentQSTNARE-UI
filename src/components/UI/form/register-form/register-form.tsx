@@ -11,7 +11,7 @@ type RegisterFormProps = {
   onClear?: () => void;
 };
 export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
-  const { control, unregister, handleSubmit, reset } =
+  const { control, unregister, handleSubmit, reset, formState } =
     useFormContext<RegisterSchema>();
   const isUniversity = useWatch({
     control,
@@ -35,8 +35,9 @@ export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
   }, [isUniversity, faculty, unregister]);
 
   const handleOnClear = () => {
-    console.log("clear", defaultValues);
-    reset(defaultValues);
+    if (formState.isDirty) {
+      reset(defaultValues);
+    }
     onClear?.();
   };
 
