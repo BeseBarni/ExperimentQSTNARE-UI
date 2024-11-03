@@ -1,9 +1,9 @@
 import { Meta } from "@storybook/react";
-import LegoColorPickerQuestion from "./lego-color-picker-question";
-
-const meta: Meta<typeof LegoColorPickerQuestion> = {
-  title: "Questions/LegoColorPickerQuestion",
-  component: LegoColorPickerQuestion,
+import "src/index.css";
+import RegisterPage from "./register-page";
+const meta: Meta<typeof RegisterPage> = {
+  title: "Pages/RegisterPage",
+  component: RegisterPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   parameters: {
@@ -15,11 +15,5 @@ const meta: Meta<typeof LegoColorPickerQuestion> = {
 export default meta;
 
 export const Default = {
-  args:{
-    title:"Please select the color you think the lego was.",
-    questonNumber:5,
-    schema:{
-      "color": "#FFFFFF"
-    },
-  },
+  args: {},
 };

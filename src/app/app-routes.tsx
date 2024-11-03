@@ -1,6 +1,13 @@
 import { RouteObject } from "react-router-dom";
 import { AppLayout } from "src/components";
-import { ErrorPage, QuestionsPage } from "src/pages";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import {
+  ErrorPage,
+  ParticipantsPage,
+  QuestionsPage,
+  RegisterPage,
+} from "src/pages";
 
 export type AppRoute = RouteObject & {
   name?: string;
@@ -15,15 +22,26 @@ export const routes: AppRoute[] = [
     errorElement: <ErrorPage />,
     children: [
       {
-        name: "main",
         index: true,
         element: <div>example</div>,
       },
       {
-        path: "questions",
-        element: <QuestionsPage />,
+        name: "New participant",
+        icon: <AddReactionIcon />,
+        path: "register",
+        element: <RegisterPage />,
+      },
+      {
+        name: "Participants",
+        icon: <PeopleAltIcon />,
+        path: "participants",
+        element: <ParticipantsPage />,
       },
     ],
+  },
+  {
+    path: "/questions",
+    element: <QuestionsPage />,
   },
 ];
 
