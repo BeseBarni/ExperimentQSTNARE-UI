@@ -70,6 +70,31 @@ export interface AnswerPostRequest {
 /**
  * 
  * @export
+ * @interface ExperimentDto
+ */
+export interface ExperimentDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExperimentDto
+     */
+    'code': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExperimentDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExperimentDto
+     */
+    'description': string;
+}
+/**
+ * 
+ * @export
  * @interface FacultyDto
  */
 export interface FacultyDto {
@@ -78,13 +103,13 @@ export interface FacultyDto {
      * @type {string}
      * @memberof FacultyDto
      */
-    'code'?: string | null;
+    'code': string;
     /**
      * 
      * @type {string}
      * @memberof FacultyDto
      */
-    'name'?: string | null;
+    'name': string;
 }
 /**
  * 
@@ -97,13 +122,13 @@ export interface MajorDto {
      * @type {string}
      * @memberof MajorDto
      */
-    'code'?: string | null;
+    'code': string;
     /**
      * 
      * @type {string}
      * @memberof MajorDto
      */
-    'name'?: string | null;
+    'name': string;
 }
 /**
  * 
@@ -116,19 +141,25 @@ export interface ParticipantDto {
      * @type {string}
      * @memberof ParticipantDto
      */
-    'id'?: string;
+    'id': string;
     /**
      * 
      * @type {string}
      * @memberof ParticipantDto
      */
-    'surname'?: string | null;
+    'surname': string;
     /**
      * 
      * @type {string}
      * @memberof ParticipantDto
      */
-    'forname'?: string | null;
+    'forname': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ParticipantDto
+     */
+    'age': number;
     /**
      * 
      * @type {string}
@@ -196,19 +227,19 @@ export interface RegisterParticipantRequest {
      * @type {string}
      * @memberof RegisterParticipantRequest
      */
-    'forname'?: string | null;
+    'forName': string;
     /**
      * 
      * @type {string}
      * @memberof RegisterParticipantRequest
      */
-    'surname'?: string | null;
+    'surName': string;
     /**
      * 
      * @type {string}
      * @memberof RegisterParticipantRequest
      */
-    'additionalNames'?: string | null;
+    'email': string;
     /**
      * 
      * @type {string}
@@ -220,7 +251,19 @@ export interface RegisterParticipantRequest {
      * @type {string}
      * @memberof RegisterParticipantRequest
      */
-    'majorCode'?: string | null;
+    'major'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterParticipantRequest
+     */
+    'experiment': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof RegisterParticipantRequest
+     */
+    'age': number;
     /**
      * 
      * @type {boolean}
@@ -264,6 +307,35 @@ export const ExperimentQSTNAREWebApiApiAxiosParamCreator = function (configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(answerPostRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        experimentGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/experiment`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -408,6 +480,39 @@ export const ExperimentQSTNAREWebApiApiAxiosParamCreator = function (configurati
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        participantIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('participantIdGet', 'id', id)
+            const localVarPath = `/participant/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {RegisterParticipantRequest} registerParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -511,6 +616,17 @@ export const ExperimentQSTNAREWebApiApiFp = function(configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async experimentGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExperimentDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.experimentGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExperimentQSTNAREWebApiApi.experimentGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async facultyGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<FacultyDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.facultyGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -523,7 +639,7 @@ export const ExperimentQSTNAREWebApiApiFp = function(configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async majorFacultyCodeGet(facultyCode: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MajorDto>> {
+        async majorFacultyCodeGet(facultyCode: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MajorDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.majorFacultyCodeGet(facultyCode, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExperimentQSTNAREWebApiApi.majorFacultyCodeGet']?.[localVarOperationServerIndex]?.url;
@@ -556,11 +672,23 @@ export const ExperimentQSTNAREWebApiApiFp = function(configuration?: Configurati
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async participantIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParticipantDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.participantIdGet(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExperimentQSTNAREWebApiApi.participantIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {RegisterParticipantRequest} registerParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async participantPost(registerParticipantRequest: RegisterParticipantRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async participantPost(registerParticipantRequest: RegisterParticipantRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ParticipantDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.participantPost(registerParticipantRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExperimentQSTNAREWebApiApi.participantPost']?.[localVarOperationServerIndex]?.url;
@@ -603,6 +731,14 @@ export const ExperimentQSTNAREWebApiApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        experimentGet(options?: any): AxiosPromise<Array<ExperimentDto>> {
+            return localVarFp.experimentGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         facultyGet(options?: any): AxiosPromise<Array<FacultyDto>> {
             return localVarFp.facultyGet(options).then((request) => request(axios, basePath));
         },
@@ -612,7 +748,7 @@ export const ExperimentQSTNAREWebApiApiFactory = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        majorFacultyCodeGet(facultyCode: string, options?: any): AxiosPromise<MajorDto> {
+        majorFacultyCodeGet(facultyCode: string, options?: any): AxiosPromise<Array<MajorDto>> {
             return localVarFp.majorFacultyCodeGet(facultyCode, options).then((request) => request(axios, basePath));
         },
         /**
@@ -636,11 +772,20 @@ export const ExperimentQSTNAREWebApiApiFactory = function (configuration?: Confi
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        participantIdGet(id: string, options?: any): AxiosPromise<ParticipantDto> {
+            return localVarFp.participantIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {RegisterParticipantRequest} registerParticipantRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        participantPost(registerParticipantRequest: RegisterParticipantRequest, options?: any): AxiosPromise<void> {
+        participantPost(registerParticipantRequest: RegisterParticipantRequest, options?: any): AxiosPromise<ParticipantDto> {
             return localVarFp.participantPost(registerParticipantRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -672,6 +817,16 @@ export class ExperimentQSTNAREWebApiApi extends BaseAPI {
      */
     public answerPost(answerPostRequest: AnswerPostRequest, options?: RawAxiosRequestConfig) {
         return ExperimentQSTNAREWebApiApiFp(this.configuration).answerPost(answerPostRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExperimentQSTNAREWebApiApi
+     */
+    public experimentGet(options?: RawAxiosRequestConfig) {
+        return ExperimentQSTNAREWebApiApiFp(this.configuration).experimentGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -716,6 +871,17 @@ export class ExperimentQSTNAREWebApiApi extends BaseAPI {
      */
     public participantIdAnswerGet(id: string, experimentCode: string, options?: RawAxiosRequestConfig) {
         return ExperimentQSTNAREWebApiApiFp(this.configuration).participantIdAnswerGet(id, experimentCode, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExperimentQSTNAREWebApiApi
+     */
+    public participantIdGet(id: string, options?: RawAxiosRequestConfig) {
+        return ExperimentQSTNAREWebApiApiFp(this.configuration).participantIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

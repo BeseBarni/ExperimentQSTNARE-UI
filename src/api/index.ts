@@ -1,6 +1,6 @@
-import { axiosInstance } from "src/libs/api-client";
+import axiosInstance, { baseUrl } from "src/libs/api-client";
 import { ExperimentQSTNAREWebApiApi } from "./generated";
 
-const Api = new ExperimentQSTNAREWebApiApi(undefined, undefined, axiosInstance);
+const Api = new ExperimentQSTNAREWebApiApi(undefined, baseUrl, axiosInstance);
 
 export default Api;

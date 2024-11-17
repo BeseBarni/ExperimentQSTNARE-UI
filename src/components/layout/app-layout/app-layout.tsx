@@ -1,6 +1,7 @@
 import { Box, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Header } from "src/components/UI";
+import LoadingPageSuspense from "src/pages/loading-page-suspense/loading-page-suspense";
 
 export default function AppLayout() {
   return (
@@ -27,7 +28,9 @@ export default function AppLayout() {
           overflow: "auto",
         }}
       >
-        <Outlet></Outlet>
+        <LoadingPageSuspense loadingText={""}>
+          <Outlet></Outlet>
+        </LoadingPageSuspense>
       </Box>
     </Box>
   );

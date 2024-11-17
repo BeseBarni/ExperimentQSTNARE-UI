@@ -1,5 +1,5 @@
 import { questionKeys } from "src/utilities";
-import { IQuestionProps } from "src/models";
+import { ForwardProps, IQuestionProps } from "src/models";
 
 type QuestionRendererProps = {
   type: string;
@@ -10,9 +10,15 @@ export default function QuestionRenderer({
   title,
   schema,
   questionNumber,
-}: QuestionRendererProps) {
+  ...props
+}: QuestionRendererProps & ForwardProps) {
   const Question = questionKeys[type as keyof typeof questionKeys];
   return (
-    <Question title={title} schema={schema} questionNumber={questionNumber} />
+    <Question
+      {...props}
+      title={title}
+      schema={schema}
+      questionNumber={questionNumber}
+    />
   );
 }

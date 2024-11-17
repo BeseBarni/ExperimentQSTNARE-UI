@@ -94,8 +94,49 @@
           "required": true
         },
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipantDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/participant/{id}": {
+      "get": {
+        "tags": [
+          "ExperimentQSTNARE.WebApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipantDto"
+                }
+              }
+            }
           }
         }
       }
@@ -165,7 +206,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MajorDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MajorDto"
+                  }
                 }
               }
             }
@@ -187,6 +231,28 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/FacultyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experiment": {
+      "get": {
+        "tags": [
+          "ExperimentQSTNARE.WebApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperimentDto"
                   }
                 }
               }
@@ -251,35 +317,72 @@
         },
         "additionalProperties": false
       },
-      "FacultyDto": {
+      "ExperimentDto": {
+        "required": [
+          "code",
+          "description",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "code": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FacultyDto": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "MajorDto": {
+        "required": [
+          "code",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "code": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "ParticipantDto": {
+        "required": [
+          "age",
+          "forname",
+          "id",
+          "surname"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -287,12 +390,16 @@
             "format": "uuid"
           },
           "surname": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "forname": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
           },
           "profession": {
             "type": "string",
@@ -342,27 +449,42 @@
         "additionalProperties": false
       },
       "RegisterParticipantRequest": {
+        "required": [
+          "age",
+          "email",
+          "experiment",
+          "forName",
+          "surName"
+        ],
         "type": "object",
         "properties": {
-          "forname": {
-            "type": "string",
-            "nullable": true
+          "forName": {
+            "minLength": 1,
+            "type": "string"
           },
-          "surname": {
-            "type": "string",
-            "nullable": true
+          "surName": {
+            "minLength": 1,
+            "type": "string"
           },
-          "additionalNames": {
-            "type": "string",
-            "nullable": true
+          "email": {
+            "minLength": 1,
+            "type": "string"
           },
           "profession": {
             "type": "string",
             "nullable": true
           },
-          "majorCode": {
+          "major": {
             "type": "string",
             "nullable": true
+          },
+          "experiment": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
           },
           "rightHanded": {
             "type": "boolean"

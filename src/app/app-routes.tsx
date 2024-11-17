@@ -4,6 +4,7 @@ import AddReactionIcon from "@mui/icons-material/AddReaction";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import {
   ErrorPage,
+  ParticipantPage,
   ParticipantsPage,
   QuestionsPage,
   RegisterPage,
@@ -36,6 +37,10 @@ export const routes: AppRoute[] = [
         icon: <PeopleAltIcon />,
         path: "participants",
         element: <ParticipantsPage />,
+      },
+      {
+        path: "participants/:id",
+        element: <ParticipantPage />,
       },
     ],
   },

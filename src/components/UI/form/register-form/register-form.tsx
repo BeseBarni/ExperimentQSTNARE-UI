@@ -4,13 +4,19 @@ import { Button, Container, Stack } from "@mui/material";
 import { defaultValues, RegisterSchema } from "src/models/schema";
 import { RHFAutocomplete, RHFTextField, RHFSwitch } from "src/components";
 import { useEffect } from "react";
+import { queries } from "src/utilities";
+import { useApiList } from "src/hooks/useApiList";
 
 type RegisterFormProps = {
   onSubmit: SubmitHandler<RegisterSchema>;
   onCancel?: () => void;
   onClear?: () => void;
 };
-export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
+export default function RegisterForm({
+  onCancel,
+  onClear,
+  onSubmit,
+}: RegisterFormProps) {
   const { control, unregister, handleSubmit, reset, formState } =
     useFormContext<RegisterSchema>();
   const isUniversity = useWatch({
@@ -22,6 +28,10 @@ export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
     name: "faculty",
     defaultValue: "",
   });
+
+  const major = useApiList(queries.majorList(faculty));
+  const facultyList = useApiList(queries.facultyList());
+  const experimentList = useApiList(queries.experimentList());
 
   useEffect(() => {
     console.log("useEffect", isUniversity, faculty);
@@ -41,15 +51,12 @@ export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
     onClear?.();
   };
 
-  const onSubmit: SubmitHandler<RegisterSchema> = (data) => {
-    console.log("data", data);
-  };
-
   return (
     <Container component="form" onSubmit={handleSubmit(onSubmit)}>
       <Stack sx={{ gap, padding: 4 }}>
         <Stack direction="row" sx={{ gap }}>
-          <RHFTextField<RegisterSchema> name="name" label="Name" />
+          <RHFTextField<RegisterSchema> name="forName" label="Name" />
+          <RHFTextField<RegisterSchema> name="surName" label="Name" />
           <RHFTextField<RegisterSchema> name="email" label="Email" />
         </Stack>
         <RHFTextField<RegisterSchema> type="number" name="age" label="Age" />
@@ -69,20 +76,28 @@ export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
               <RHFAutocomplete<RegisterSchema>
                 sx={{ width: "100%" }}
                 name="faculty"
-                options={[
-                  { label: "asd", id: "asd" },
-                  { label: "dsa", id: "dsa" },
-                ]}
+                options={
+                  facultyList[0]?.map((p) => {
+                    return {
+                      label: p.name!,
+                      id: p.code!,
+                    };
+                  }) ?? []
+                }
                 label="Faculty"
               />
               {faculty.length !== 0 ? (
                 <RHFAutocomplete<RegisterSchema>
                   sx={{ width: "100%" }}
                   name="major"
-                  options={[
-                    { label: "asd", id: "asd" },
-                    { label: "dsa", id: "dsa" },
-                  ]}
+                  options={
+                    major[0]?.map((p) => {
+                      return {
+                        label: p.name!,
+                        id: p.code!,
+                      };
+                    }) ?? []
+                  }
                   label="Major"
                 />
               ) : (
@@ -94,10 +109,14 @@ export default function RegisterForm({ onCancel, onClear }: RegisterFormProps) {
         <RHFAutocomplete<RegisterSchema>
           sx={{ width: "100%" }}
           name="experiment"
-          options={[
-            { label: "asd", id: "asd" },
-            { label: "dsa", id: "dsa" },
-          ]}
+          options={
+            experimentList[0]?.map((p) => {
+              return {
+                label: p.name!,
+                id: p.code!,
+              };
+            }) ?? []
+          }
           label="Experiment"
         />
         <Stack direction="row">

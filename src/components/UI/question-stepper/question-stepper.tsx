@@ -4,12 +4,16 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import { Button } from "@mui/material";
 import { QuestionRenderer } from "../question-renderer";
+import { ForwardProps } from "src/models";
 
 type QuestionStepperProps = {
   questions: QuestionDto[];
 };
 
-export default function QuestionStepper({ questions }: QuestionStepperProps) {
+export default function QuestionStepper({
+  questions,
+  ...props
+}: QuestionStepperProps & ForwardProps) {
   const [activeStep, setActiveStep] = useState(1);
 
   const handleNext = () => {
@@ -24,7 +28,7 @@ export default function QuestionStepper({ questions }: QuestionStepperProps) {
   };
 
   return (
-    <div className="flex flex-col p-4 gap-2">
+    <div {...props} className="flex flex-col p-4 gap-2 h-full">
       <h1 className="font-bold text-lg">{questions[activeStep].group}</h1>
       <div className="flex">
         <Button onClick={handleBack}>
@@ -51,9 +55,10 @@ export default function QuestionStepper({ questions }: QuestionStepperProps) {
           <ArrowForwardIosRoundedIcon />
         </Button>
       </div>
-      <div>
+      <div className="h-full w-full items-center justify-center flex">
         {
           <QuestionRenderer
+            className="w-full lg:px-24 px-2"
             type={questions[activeStep].type}
             title={questions[activeStep].title}
             schema={JSON.parse(questions[activeStep].schema)}

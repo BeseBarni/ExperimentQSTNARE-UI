@@ -1,7 +1,7 @@
-import { CircularProgress } from "@mui/material";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { QuestionStepper } from "src/components";
-import { useQuestionList } from "src/hooks";
+import { queries } from "src/utilities";
 
 export default function QuestionsPage() {
   const [searchParams] = useSearchParams();
@@ -12,13 +12,14 @@ export default function QuestionsPage() {
     throw new Error("experimentCode and participantId are required");
   }
 
-  const [data, loading, error] = useQuestionList(experimentCode, participantId);
+  const questions = useSuspenseQuery(
+    queries.questionGet(experimentCode, participantId)
+  );
 
-  return loading ? (
-    <CircularProgress />
-  ) : (
-    <div>
-      <QuestionStepper questions={data!} />
-    </div>
+  return (
+    <QuestionStepper
+      className="top-auto bottom-auto"
+      questions={questions.data.data}
+    />
   );
 }

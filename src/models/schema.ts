@@ -2,10 +2,11 @@ import { z } from "zod";
 
 export const registerSchema = z.intersection(
   z.object({
-    name: z.string().min(1),
+    forName: z.string().min(1),
+    surName: z.string().min(1),
     email: z.string().email(),
-    age: z.number().int().positive(),
-    experiment: z.string().optional(),
+    age: z.number().int().positive().min(1),
+    experiment: z.string().min(1),
     profession: z.string().optional(),
     isUniversity: z.boolean(),
   }),
@@ -25,7 +26,8 @@ export type RegisterSchema = z.infer<typeof registerSchema>;
 
 export const defaultValues: RegisterSchema = {
   isUniversity: false,
-  name: "",
+  forName: "",
+  surName: "",
   email: "",
   age: 0,
   profession: "",
