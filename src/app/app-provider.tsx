@@ -46,6 +46,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [setWindowWidth]);
+
   return (
     <AppContext.Provider value={{ windowWidth }}>
       <ErrorBoundary FallbackComponent={ErrorPage}>

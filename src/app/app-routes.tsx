@@ -1,6 +1,5 @@
 import { RouteObject } from "react-router-dom";
 import { AppLayout } from "src/components";
-import AddReactionIcon from "@mui/icons-material/AddReaction";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import {
   ErrorPage,
@@ -27,8 +26,6 @@ export const routes: AppRoute[] = [
         element: <div>example</div>,
       },
       {
-        name: "New participant",
-        icon: <AddReactionIcon />,
         path: "register",
         element: <RegisterPage />,
       },

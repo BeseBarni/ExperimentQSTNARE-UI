@@ -37,4 +37,10 @@ export const queries = {
       queryFn: () => Api.participantGet(experimentCode),
     };
   },
+  participantAnswerList: (participantId: string, experimentCode: string) => {
+    return {
+      queryKey: ["participantAnswerList", experimentCode, participantId],
+      queryFn: () => Api.participantIdAnswerGet(participantId, experimentCode),
+    };
+  },
 };

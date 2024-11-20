@@ -1,51 +1,53 @@
-import { Radio, RadioGroup } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Radio, RadioGroup, styled } from "@mui/material";
+import { useContext, useState } from "react";
+import { AppContext } from "src/app/app-provider";
 import { QuestionWrapper } from "src/components";
-import { IQuestionProps } from "src/models";
-
-type LeastToMostQuestionSchema = {
-  least: string;
-  most: string;
-  range: number;
-};
+import { IQuestionProps, LeastToMostSchema } from "src/models";
 
 export default function LeastToMostQuestion({
   title,
   schema,
   questionNumber,
+  defaultValue,
+  edit = true,
   ...props
-}: IQuestionProps<LeastToMostQuestionSchema>) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [value, setValue] = useState<string | null>(null);
+}: IQuestionProps<LeastToMostSchema>) {
+  const { windowWidth } = useContext(AppContext);
+  const [value, setValue] = useState<string | null>(defaultValue ?? null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
 
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [setWindowWidth]);
-
   const radioGroupClasses = `flex ${
     windowWidth > 640 ? "justify-between" : "justify-center"
   } items-center`;
+
+  console.log("defValue", defaultValue);
 
   return (
     <QuestionWrapper {...props} questionNumber={questionNumber} title={title}>
       <div className={radioGroupClasses}>
         {windowWidth > 640 && <p className="font-medium">{schema.least}</p>}
-        <RadioGroup row value={value} onChange={handleChange}>
+        <RadioGroup row value={value} onChange={edit ? handleChange : () => {}}>
           {Array(schema.range)
             .fill(0)
-            .map((_, index: number) => (
-              <Radio
-                sx={{ padding: windowWidth > 640 ? "0.5rem" : 0 }}
-                value={index}
-                key={index}
-              />
-            ))}
+            .map((_, index: number) =>
+              edit ? (
+                <Radio
+                  sx={{ padding: windowWidth > 640 ? "0.5rem" : 0 }}
+                  value={index}
+                  key={index}
+                />
+              ) : (
+                <Radio
+                  onClick={() => {}}
+                  sx={{ padding: windowWidth > 640 ? "0.5rem" : 0 }}
+                  value={index}
+                  key={index}
+                />
+              )
+            )}
         </RadioGroup>
         {windowWidth > 640 && <p className="font-medium">{schema.most}</p>}
       </div>

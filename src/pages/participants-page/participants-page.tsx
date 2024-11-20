@@ -12,12 +12,14 @@ import {
   TextField,
   Typography,
   Link,
+  Stack,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { queries } from "src/utilities";
 import LoadingPageSuspense from "../loading-page-suspense/loading-page-suspense";
+
 type ParticipantProps = {
   experimentCode: string;
 };
@@ -29,7 +31,7 @@ function createData(
   major?: string | null,
   profession?: string | null
 ) {
-  return { id, firstName, lastName, age, major, profession };
+  return { id, name: `${firstName} ${lastName}`, age, major, profession };
 }
 
 const Participants = ({ experimentCode }: ParticipantProps) => {
@@ -42,8 +44,7 @@ const Participants = ({ experimentCode }: ParticipantProps) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>First name</TableCell>
-            <TableCell>Last name</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell>Age</TableCell>
             <TableCell>Major</TableCell>
             <TableCell>Profession</TableCell>
@@ -68,10 +69,9 @@ const Participants = ({ experimentCode }: ParticipantProps) => {
               >
                 <TableCell>
                   <Link component={RouterLink} to={`${row.id}`}>
-                    {row.firstName}
+                    {row.name}
                   </Link>
                 </TableCell>
-                <TableCell>{row.lastName}</TableCell>
                 <TableCell>{row.age}</TableCell>
                 <TableCell>{row.major}</TableCell>
                 <TableCell>{row.profession}</TableCell>
@@ -93,8 +93,13 @@ export default function ParticipantsPage() {
   });
   return (
     <Box>
-      <div className="flex flex-row justify-between w-full items-center">
-        <Typography variant="h2" className="flex-1">
+      <Stack
+        direction="row"
+        gap={4}
+        sx={{ display: "flex" }}
+        className="w-full items-center pb-8"
+      >
+        <Typography variant="h3" className="flex-1">
           Participants
         </Typography>
         <Autocomplete
@@ -113,10 +118,16 @@ export default function ParticipantsPage() {
             />
           )}
         />
-        <div className="flex flex-1 justify-end">
-          <Button disabled={!experimentCode}>Add participant</Button>
-        </div>
-      </div>
+        <Button
+          sx={{ flex: 1, width: "100%" }}
+          variant="contained"
+          component={RouterLink}
+          disabled={!experimentCode}
+          to={`/register?experimentCode=${experimentCode}`}
+        >
+          Add participant
+        </Button>
+      </Stack>
       <LoadingPageSuspense loadingText={""}>
         <Participants experimentCode={experimentCode!} />
       </LoadingPageSuspense>
