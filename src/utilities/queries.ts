@@ -1,10 +1,15 @@
 import Api from "src/api";
 
 export const queries = {
-  questionGet: (experimentCode: string, participantId: string) => {
+  questionGet: (
+    experimentCode: string,
+    participantId: string,
+    answerGroupName: string
+  ) => {
     return {
-      queryKey: ["questions", experimentCode],
-      queryFn: () => Api.questionGet(experimentCode, participantId),
+      queryKey: ["questions", experimentCode, participantId, answerGroupName],
+      queryFn: () =>
+        Api.questionGet(experimentCode, participantId, answerGroupName),
     };
   },
   majorList: (facultyCode: string) => {

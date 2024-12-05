@@ -9,7 +9,8 @@ export default function QuestionRenderer({
   type,
   title,
   schema,
-  defaultValue,
+  value,
+  setValue,
   questionNumber,
   ...props
 }: QuestionRendererProps & ForwardProps) {
@@ -19,7 +20,8 @@ export default function QuestionRenderer({
       {...props}
       title={title}
       schema={schema}
-      defaultValue={defaultValue}
+      value={value}
+      setValue={setValue}
       questionNumber={questionNumber}
     />
   );

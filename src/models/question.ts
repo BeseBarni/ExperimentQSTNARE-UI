@@ -4,4 +4,6 @@ export interface IQuestionProps<TSchema> {
   questionNumber: number;
   edit?: boolean;
   defaultValue?: any;
+  value?: any;
+  setValue?: any;
 }

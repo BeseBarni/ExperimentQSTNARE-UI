@@ -1,6 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { AppLayout } from "src/components";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { Navigate } from "react-router-dom";
 import {
   ErrorPage,
   ParticipantPage,
@@ -23,7 +24,7 @@ export const routes: AppRoute[] = [
     children: [
       {
         index: true,
-        element: <div>example</div>,
+        element: <Navigate to="participants" />,
       },
       {
         path: "register",

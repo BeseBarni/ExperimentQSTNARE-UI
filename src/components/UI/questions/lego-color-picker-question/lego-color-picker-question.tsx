@@ -11,7 +11,9 @@ type LegoColorPickerQuestionSchema = {
 
 export default function LegoColorPickerQuestion({
   title,
-  schema,
+  value,
+  setValue,
+  edit = true,
   questionNumber,
 }: IQuestionProps<LegoColorPickerQuestionSchema>) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -26,9 +28,8 @@ export default function LegoColorPickerQuestion({
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  const [color, setColor] = useState(schema.color);
   const onColorChange = (color: ColorResult) => {
-    setColor(color.hexa);
+    setValue(color.hexa);
   };
   return (
     <QuestionWrapper questionNumber={questionNumber} title={title}>
@@ -42,23 +43,25 @@ export default function LegoColorPickerQuestion({
               alt="Lego"
             />
             <div
-              style={{ background: color }}
+              style={{ background: value }}
               className="w-full h-full z-10 mix-blend-multiply absolute top-0 left-0"
             ></div>
           </div>
         </button>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 300,
-            horizontal: 300,
-          }}
-        >
-          <Sketch color={schema.color} onChange={onColorChange} />
-        </Popover>
+        {edit && (
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 300,
+              horizontal: 300,
+            }}
+          >
+            <Sketch color={value ?? "#FFFFFF"} onChange={onColorChange} />
+          </Popover>
+        )}
       </div>
     </QuestionWrapper>
   );

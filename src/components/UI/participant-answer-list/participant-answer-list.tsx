@@ -1,13 +1,23 @@
-import { List, Stack, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { queries } from "src/utilities";
-import { AnswerRenderer } from "../answer-renderer";
 import { QuestionRenderer } from "../question-renderer";
 import { ForwardProps } from "src/models";
+import { useState } from "react";
+import { AnswerDto } from "src/api/generated";
 
 type ParticipantAnswerListProps = {
   participantId: string;
   experimentCode: string;
+  participantName: string;
 };
 
 type Question = {
@@ -26,34 +36,67 @@ type GroupedQuestions = {
 export default function ParticipantAnswerList({
   participantId,
   experimentCode,
+  participantName,
   ...props
 }: ParticipantAnswerListProps & ForwardProps) {
   const participantAnswerList = useSuspenseQuery(
     queries.participantAnswerList(participantId, experimentCode)
+  ).data.data;
+
+  const [answerGroupName, setAnswerGroupName] = useState<string | undefined>(
+    undefined
   );
 
-  const answers = (
-    participantAnswerList.data.data.flatMap((p) => {
-      return {
-        title: p.question!.title,
-        id: p.question!.id,
-        group: p.question!.group,
-        answer: p.value,
-        type: p.question?.type,
-        schema: p.question?.schema,
-      };
-    }) as Question[]
-  ).reduce<GroupedQuestions>((acc, curr) => {
-    if (curr.group) {
-      acc[curr.group] = [...(acc[curr.group] || []), curr];
-    }
-    return acc;
-  }, {});
+  const handleGroupNameChange = (event: SelectChangeEvent) => {
+    setAnswerGroupName(event.target.value as string);
+  };
+
+  const answers = (answerList: AnswerDto[]) =>
+    (
+      answerList?.flatMap((p) => {
+        return {
+          title: p.question!.title,
+          id: p.question!.id,
+          group: p.question!.group,
+          answer: p.value,
+          type: p.question?.type,
+          schema: p.question?.schema,
+        };
+      }) as Question[]
+    )?.reduce<GroupedQuestions>((acc, curr) => {
+      if (curr.group) {
+        acc[curr.group] = [...(acc[curr.group] || []), curr];
+      }
+      return acc;
+    }, {}) ?? [];
   let index = 1;
-  console.log("answers", answers);
   return (
     <div {...props}>
-      {Object.entries(answers).map(([group, questions]) => (
+      <Stack sx={{ display: "flex" }} direction="row">
+        <Typography sx={{ flex: 1 }} variant="h3">
+          {participantName}
+        </Typography>
+        <FormControl fullWidth sx={{ width: "100%", flex: 1 }}>
+          <InputLabel id="answerGroupSelectLabel">Answergroup name</InputLabel>
+          <Select
+            labelId="answerGroupSelectLabel"
+            id="answerGroupSelect"
+            label="Answergroup name"
+            value={answerGroupName}
+            onChange={handleGroupNameChange}
+          >
+            {participantAnswerList.map((group) => {
+              return <MenuItem value={group.name!}>{group.name}</MenuItem>;
+            })}
+          </Select>
+        </FormControl>
+      </Stack>
+      {Object.entries(
+        answers(
+          participantAnswerList.find((p) => p.name == answerGroupName)
+            ?.answers ?? []
+        )
+      ).map(([group, questions]) => (
         <div className="w-full h-full" key={group}>
           <Typography
             sx={{ paddingBottom: "2rem", paddingTop: "2rem" }}
@@ -68,7 +111,7 @@ export default function ParticipantAnswerList({
                 type={q.type}
                 title={q.title}
                 schema={JSON.parse(q.schema)}
-                defaultValue={+q.answer}
+                value={q.answer}
                 edit={false}
               />
             ))}

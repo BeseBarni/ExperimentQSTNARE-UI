@@ -2,7 +2,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
-  console.log("intercepting");
   if (config.headers) {
     config.headers.Accept = "application/json";
     config.headers["Access-Control-Allow-Origin"] = "*";

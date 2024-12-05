@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Button, Stack, TextField } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link as ReactRouterLink, useParams } from "react-router-dom";
@@ -18,6 +11,7 @@ export default function ParticipantPage() {
   const { id } = useParams();
   if (!id) throw new Error("id is required");
   const [experimentCode, setExperimentCode] = useState<string | null>(null);
+  const [answerGroupName, setAnswerGroupName] = useState<string | null>(null);
   const participant = useSuspenseQuery(queries.participant(id!));
   const experiments = useSuspenseQuery(queries.experimentList());
 
@@ -32,19 +26,23 @@ export default function ParticipantPage() {
       // default is 'portrait'
     },
   });
-  console.log("experimentCode", !!experimentCode);
 
   const options = experiments.data.data.map((e) => {
     return { label: e.name!, id: e.code! };
   });
   return (
     <Box>
-      <Stack>
-        <Stack direction="row" sx={{ display: "flex" }}>
-          <Typography sx={{ flex: 1 }} variant="h3">
-            {`${participant.data.data.forname} ${participant.data.data.surname}`}
-          </Typography>
+      <Stack gap={4}>
+        <Stack direction="row" sx={{ display: "flex", gap: "1rem" }}>
           <div className="flex-1 flex flex-row gap-4">
+            <TextField
+              sx={{ width: "100%" }}
+              label="Answergroup name"
+              value={answerGroupName}
+              onChange={(event) =>
+                setAnswerGroupName(event.target.value ?? null)
+              }
+            />
             <Autocomplete
               sx={{ width: "100%" }}
               options={options}
@@ -62,11 +60,11 @@ export default function ParticipantPage() {
               )}
             />
             <Button
-              disabled={!experimentCode}
+              disabled={!answerGroupName || !experimentCode}
               sx={{ width: "100%" }}
               variant="contained"
               component={ReactRouterLink}
-              to={`/questions?experimentCode=${experimentCode}&participantId=${id}`}
+              to={`/questions?experimentCode=${experimentCode}&participantId=${id}&answerGroupName=${answerGroupName}`}
               replace={true}
             >
               Start questionare
@@ -86,6 +84,7 @@ export default function ParticipantPage() {
               <ParticipantAnswerList
                 participantId={id}
                 experimentCode={experimentCode}
+                participantName={`${participant.data.data.forname} ${participant.data.data.surname}`}
               />
             </div>
           )}

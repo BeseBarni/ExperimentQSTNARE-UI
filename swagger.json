@@ -29,6 +29,15 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "answerGroupName",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -175,7 +184,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnswerDto"
+                    "$ref": "#/components/schemas/AnswerGroupDto"
                   }
                 }
               }
@@ -299,20 +308,62 @@
         },
         "additionalProperties": false
       },
-      "AnswerPostRequest": {
+      "AnswerGroupDto": {
         "type": "object",
         "properties": {
-          "answerId": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AnswerPostDto": {
+        "required": [
+          "data",
+          "questionId"
+        ],
+        "type": "object",
+        "properties": {
+          "questionId": {
             "type": "string",
             "format": "uuid"
           },
           "data": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AnswerPostRequest": {
+        "required": [
+          "answerGroupName",
+          "answerList",
+          "participantId"
+        ],
+        "type": "object",
+        "properties": {
+          "answerList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerPostDto"
+            }
           },
           "participantId": {
             "type": "string",
             "format": "uuid"
+          },
+          "answerGroupName": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false

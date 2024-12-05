@@ -11,7 +11,6 @@ export default function RegisterPage() {
       <RegisterFormProvider experimentCode={searchParams.get("experimentCode")}>
         <RegisterForm
           onSubmit={(data) => {
-            console.log("mutate", data);
             Api.participantPost(data).then((res) => {
               navigate("/participants/" + res.data.id);
             });

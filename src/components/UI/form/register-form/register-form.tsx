@@ -34,7 +34,6 @@ export default function RegisterForm({
   const experimentList = useApiList(queries.experimentList());
 
   useEffect(() => {
-    console.log("useEffect", isUniversity, faculty);
     if (!isUniversity) {
       unregister("faculty");
       unregister("major");

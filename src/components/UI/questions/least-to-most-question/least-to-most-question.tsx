@@ -1,5 +1,5 @@
-import { Radio, RadioGroup, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { Radio, RadioGroup } from "@mui/material";
+import { useContext } from "react";
 import { AppContext } from "src/app/app-provider";
 import { QuestionWrapper } from "src/components";
 import { IQuestionProps, LeastToMostSchema } from "src/models";
@@ -8,12 +8,12 @@ export default function LeastToMostQuestion({
   title,
   schema,
   questionNumber,
-  defaultValue,
+  value,
+  setValue,
   edit = true,
   ...props
 }: IQuestionProps<LeastToMostSchema>) {
   const { windowWidth } = useContext(AppContext);
-  const [value, setValue] = useState<string | null>(defaultValue ?? null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
@@ -22,8 +22,6 @@ export default function LeastToMostQuestion({
   const radioGroupClasses = `flex ${
     windowWidth > 640 ? "justify-between" : "justify-center"
   } items-center`;
-
-  console.log("defValue", defaultValue);
 
   return (
     <QuestionWrapper {...props} questionNumber={questionNumber} title={title}>
